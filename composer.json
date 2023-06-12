@@ -1,0 +1,16 @@
+{
+    "name": "enesisrl/qapla",
+    "description": "Classi per API Qapla",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Enesisrl\\Qapla\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Enesi srl"
+        }
+    ],
+    "require": {}
+}
