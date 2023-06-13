@@ -1,6 +1,9 @@
 {
     "name": "enesisrl/qapla",
+    "version": "1.0",
     "description": "Classi per API Qapla",
+    "keywords": ["qapla", "REST", "client", "curl", "JSON", "XML"],
+    "homepage": "https://github.com/enesisrl/qapla",
     "type": "library",
     "autoload": {
         "psr-4": {
@@ -12,5 +15,12 @@
             "name": "Enesi srl"
         }
     ],
-    "require": {}
+    "support": {
+        "issues": "https://github.com/enesisrl/qapla/issues"
+    },
+    "require": {
+        "php": ">=7.2",
+        "ext-curl": "*",
+        "ext-json": "*"
+    }
 }

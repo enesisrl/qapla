@@ -54,21 +54,37 @@ class Api extends RestClient {
         return $this->options['sandbox'];
     }
 
-    public function pushOrder($params=[]){
-
-        $default_data = [
+    public function pushOrder($order=[], $origin=null){
+        $data = [
             'apiKey' => $this->getApiKey(),
-            'origin' => 'ecommerce',
-            'pushOrder' => [
-
-            ]
+            'pushOrder' => $order
         ];
 
-        $data = array_merge($default_data,$params);
-
+        if ($origin) {
+            $data['origin'] = $origin;
+        }
         return $this->post('pushOrder', $data);
-
     }
 
+    public function deleteOrder($reference){
+        $data = [
+            'apiKey' => $this->getApiKey(),
+            'reference' => $reference
+        ];
+        return $this->delete('deleteOrder', $data);
+    }
+
+    public function undeleteOrder($reference){
+        $data = [
+            'apiKey' => $this->getApiKey(),
+            'reference' => $reference
+        ];
+        return $this->patch('undeleteOrder', $data);
+    }
+
+    public function updateOrder($order){
+        $order['updatedAt'] = date("Y-m-d H:i:s");
+        return $this->pushOrder($order);
+    }
 
 }
