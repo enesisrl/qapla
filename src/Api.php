@@ -45,6 +45,7 @@ class Api extends Curl {
     public function getUrl($path = null){
         $urlParts = [];
         $urlParts[] = rtrim($this->options['base_url'],"/");
+        $urlParts[] = $this->getApiVersion();
         if ($path){
             $urlParts[] = ltrim(rtrim($path,"/"),"/")."/";
         }
@@ -60,7 +61,8 @@ class Api extends Curl {
         if ($origin) {
             $data['origin'] = $origin;
         }
-        return $this->post($this->getUrl('pushOrder'), $data);
+
+        return $this->post($this->getUrl('pushOrder'), json_encode($data));
     }
 
     public function deleteOrder($reference){
