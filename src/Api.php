@@ -55,13 +55,12 @@ class Api extends Curl {
     public function pushOrder($order=[], $origin=null){
         $data = [
             'apiKey' => $this->getApiKey(),
-            'pushOrder' => $order
+            'pushOrder' => [$order]
         ];
 
         if ($origin) {
             $data['origin'] = $origin;
         }
-
         return $this->post($this->getUrl('pushOrder'), json_encode($data));
     }
 
