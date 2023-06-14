@@ -69,7 +69,7 @@ class Api extends Curl {
             'apiKey' => $this->getApiKey(),
             'reference' => $reference
         ];
-        return $this->delete($this->getUrl('deleteOrder'), $data);
+        return $this->delete($this->getUrl('deleteOrder'),[], json_encode($data));
     }
 
     public function undeleteOrder($reference){
@@ -77,7 +77,7 @@ class Api extends Curl {
             'apiKey' => $this->getApiKey(),
             'reference' => $reference
         ];
-        return $this->patch($this->getUrl('undeleteOrder'), $data);
+        return $this->patch($this->getUrl('undeleteOrder'), json_encode($data));
     }
 
     public function updateOrder($order){
