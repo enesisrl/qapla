@@ -2,35 +2,23 @@
 
 namespace Enesisrl\Qapla;
 
-use Enesisrl\Qapla\RestClient;
+use Curl\Curl;
 
-class Api extends RestClient {
+class Api extends Curl {
+
+    protected $options;
 
     public function __construct(array $options = []){
 
         $default_options = [
-            'headers' => [],
-            'parameters' => [],
-            'curl_options' => [],
-            'build_indexed_queries' => FALSE,
             'api_version' => '1.2',
             'api_key' => null,
             'sandbox' => null,
-            'user_agent' => "Enesi QaplaClient/1.0",
-            'base_url' => "https://api.qapla.it/",
-            'format' => NULL,
-            'format_regex' => "/(\w+)\/(\w+)(;[.+])?/",
-            'decoders' => [
-                'json' => 'json_decode',
-                'php' => 'unserialize'
-            ],
-            'username' => NULL,
-            'password' => NULL
+            'base_url' => "https://api.qapla.it/"
         ];
 
-        $final_settings = array_merge($default_options, $options);
-        $final_settings['base_url'] = implode('/',[rtrim($final_settings['base_url'],"/"),$final_settings['api_version']]);
-        parent::__construct($final_settings);
+        $this->options = array_merge($default_options,$options);
+        parent::__construct($this->options['base_url']);
     }
 
     /**
@@ -54,6 +42,15 @@ class Api extends RestClient {
         return $this->options['sandbox'];
     }
 
+    public function getUrl($path = null){
+        $urlParts = [];
+        $urlParts[] = rtrim($this->options['base_url'],"/");
+        if ($path){
+            $urlParts[] = ltrim(rtrim($path,"/"),"/")."/";
+        }
+        return implode('/',$urlParts);
+    }
+
     public function pushOrder($order=[], $origin=null){
         $data = [
             'apiKey' => $this->getApiKey(),
@@ -63,7 +60,7 @@ class Api extends RestClient {
         if ($origin) {
             $data['origin'] = $origin;
         }
-        return $this->post('pushOrder', $data);
+        return $this->post($this->getUrl('pushOrder'), $data);
     }
 
     public function deleteOrder($reference){
@@ -71,7 +68,7 @@ class Api extends RestClient {
             'apiKey' => $this->getApiKey(),
             'reference' => $reference
         ];
-        return $this->delete('deleteOrder', $data);
+        return $this->delete($this->getUrl('deleteOrder'), $data);
     }
 
     public function undeleteOrder($reference){
@@ -79,7 +76,7 @@ class Api extends RestClient {
             'apiKey' => $this->getApiKey(),
             'reference' => $reference
         ];
-        return $this->patch('undeleteOrder', $data);
+        return $this->patch($this->getUrl('undeleteOrder'), $data);
     }
 
     public function updateOrder($order){
