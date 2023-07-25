@@ -85,4 +85,12 @@ class Api extends Curl {
         return $this->pushOrder($order);
     }
 
+    public function getShipment($reference){
+        $data = [
+            'apiKey' => $this->getApiKey(),
+            'reference' => $reference
+        ];
+        return $this->get($this->getUrl('getShipment'),json_encode($data));
+    }
+
 }
